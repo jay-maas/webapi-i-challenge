@@ -3,7 +3,8 @@ import {
     GET_USER,
     ADD_USER,
     UPDATE_USER,
-    DELETE_USER
+    DELETE_USER,
+    HANDLE_CHANGES
 } from '../constants'
 
 const initialState = {
@@ -14,47 +15,41 @@ const initialState = {
         }
     ],
     users: [],
-    user: []
+    user: [],
+    message: '',
+    error: ''
 }
 
-export const usersReducer =  (state = initialState, action) => {
+export default function usersReducer(state = initialState, action) {
     switch (action.type) {
         case GET_USERS:
             return {
                 ...state,
                 users: action.payload,
-                inputValue: [
-                    {
-                        name: '',
-                        bio: ''
-                    }
-                ],
-                user: []
             }
         case GET_USER:
             return {
                 ...state,
                 user: action.payload,
-                inputValue: [
-                    {
-                        name: '',
-                        bio: ''
-                    }
-                ],
             }
         case ADD_USER:
             return {
                 ...state,
-                inputValue: [
-                    {
-                        name: action.payload.name,
-                        bio: action.payload.bio
-                    }
-                ]
+                message: action.payload
             }
         case UPDATE_USER:
             return {
                 ...state,
+                message: action.payload
+            }
+        case DELETE_USER:
+            return {
+                ...state,
+                message: action.payload
+            }
+        case HANDLE_CHANGES:
+            return {
+                ...state,
                 inputValue: [
                     {
                         name: action.payload.name,
@@ -62,15 +57,7 @@ export const usersReducer =  (state = initialState, action) => {
                     }
                 ]
             }
-        case DELETE_USER:
-            return {
-                ...state,
-                inputValue: [
-                    {
-                        name: '',
-                        bio: ''
-                    }
-                ]
-            }
+        default:
+            return state
     }
 }
